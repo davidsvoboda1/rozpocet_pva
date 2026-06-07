@@ -1,0 +1,10 @@
+C:\Users\David\Downloads\RozpocetFinanci2\bin\Debug\net48\RozpocetFinanci.exe.config
+C:\Users\David\Downloads\RozpocetFinanci2\bin\Debug\net48\RozpocetFinanci.exe
+C:\Users\David\Downloads\RozpocetFinanci2\bin\Debug\net48\RozpocetFinanci.pdb
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.csproj.AssemblyReference.cache
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.AssemblyInfoInputs.cache
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.AssemblyInfo.cs
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.csproj.CoreCompileInputs.cache
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.exe
+C:\Users\David\Downloads\RozpocetFinanci2\obj\Debug\net48\RozpocetFinanci.pdb
