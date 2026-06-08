@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\RozpocetFinanci.csproj": {}
+    "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\rozpocet_pva\\RozpocetFinanci.csproj": {}
   },
   "projects": {
-    "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\RozpocetFinanci.csproj": {
+    "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\rozpocet_pva\\RozpocetFinanci.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\RozpocetFinanci.csproj",
+        "projectUniqueName": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\rozpocet_pva\\RozpocetFinanci.csproj",
         "projectName": "RozpocetFinanci",
-        "projectPath": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\RozpocetFinanci.csproj",
+        "projectPath": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\rozpocet_pva\\RozpocetFinanci.csproj",
         "packagesPath": "C:\\Users\\David\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\obj\\",
+        "outputPath": "C:\\Users\\David\\Downloads\\RozpocetFinanci2\\rozpocet_pva\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\David\\AppData\\Roaming\\NuGet\\NuGet.Config",

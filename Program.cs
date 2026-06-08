@@ -47,14 +47,13 @@ namespace RozpocetFinanci
             BackColor = CMain;
             Font = new Font("Segoe UI", 9f);
 
+            VytvorTabulku();
+            VytvorStatus();
+            VytvorFilter();
+            VytvorVstup();
 
-            BudujTabulku();
-            BudujStatus();
-            BudujFilter();
-            BudujVstup();
-
-            ObnovjTabulku(null);
-            ObnovjStatus();
+            ObnovTabulku(null);
+            ObnovStatus();
         }
 
         private Label Lbl(string t, Point p) =>
@@ -66,7 +65,7 @@ namespace RozpocetFinanci
         private Button Btn(string t, Point p, int w, Color c) =>
             new Button { Text = t, Location = p, Width = w, Height = 28, BackColor = c, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9f, FontStyle.Bold), Cursor = Cursors.Hand };
 
-        private void BudujVstup()
+        private void VytvorVstup()
         {
             var pnl = new Panel { Dock = DockStyle.Top, Height = 160, BackColor = CPanel };
 
@@ -76,7 +75,7 @@ namespace RozpocetFinanci
             _rbVydaj = new RadioButton { Text = "Výdaj", Location = new Point(85, 32), AutoSize = true, ForeColor = CRud, BackColor = Color.Transparent };
 
             _txtCastka = Txt(new Point(10, 68), 100);
-            _txtCastka.KeyPress += OnCastkaKeyPress;
+            _txtCastka.KeyPress += PriStiskuKlavesyCastka;
 
             _cmbKategorie = new ComboBox { Location = new Point(200, 68), Width = 140, DropDownStyle = ComboBoxStyle.DropDown, BackColor = CPole, ForeColor = CText, FlatStyle = FlatStyle.Flat };
             foreach (string k in new[] { "Jídlo", "Bydlení", "Doprava", "Zábava", "Zdraví", "Plat", "Ostatní" })
@@ -86,14 +85,14 @@ namespace RozpocetFinanci
             _dtpDatum = new DateTimePicker { Location = new Point(355, 68), Width = 130, Format = DateTimePickerFormat.Short };
 
             _txtPopis = Txt(new Point(10, 125), 460);
-            _txtPopis.KeyDown += OnPopisKeyDown;
+            _txtPopis.KeyDown += PriStiskuKlavesyPopis;
 
             var btnPridat = Btn("Přidat", new Point(500, 65), 80, CZel);
             var btnSmazat = Btn("Smazat", new Point(588, 65), 80, CRud);
             var btnVymazat = Btn("Smazat vše", new Point(500, 122), 168, Color.FromArgb(80, 80, 110));
-            btnPridat.Click += OnPridat;
-            btnSmazat.Click += OnSmazat;
-            btnVymazat.Click += OnVymazatVse;
+            btnPridat.Click += PriKliknutiPridat;
+            btnSmazat.Click += PriKliknutiSmazat;
+            btnVymazat.Click += PriKliknutiVymazatVse;
 
             pnl.Controls.AddRange(new Control[] {
                 lblN, _rbPrijem, _rbVydaj,
@@ -106,20 +105,20 @@ namespace RozpocetFinanci
             Controls.Add(pnl);
         }
 
-        private void BudujFilter()
+        private void VytvorFilter()
         {
             var pnl = new Panel { Dock = DockStyle.Top, Height = 34, BackColor = Color.FromArgb(35, 35, 58) };
             var lbl = new Label { Text = "Filtr:", Location = new Point(10, 9), AutoSize = true, ForeColor = CText, BackColor = Color.Transparent };
             _cmbFilter = new ComboBox { Location = new Point(45, 5), Width = 160, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = CPole, ForeColor = CText, FlatStyle = FlatStyle.Flat };
             _cmbFilter.Items.Add("— Vše —");
             _cmbFilter.SelectedIndex = 0;
-            _cmbFilter.SelectedIndexChanged += OnFilterZmena;
+            _cmbFilter.SelectedIndexChanged += PriZmeneFiltru;
             pnl.Controls.Add(lbl);
             pnl.Controls.Add(_cmbFilter);
             Controls.Add(pnl);
         }
 
-        private void BudujTabulku()
+        private void VytvorTabulku()
         {
             _grid = new DataGridView
             {
@@ -155,11 +154,11 @@ namespace RozpocetFinanci
             _grid.Columns["Kat"].FillWeight = 16;
             _grid.Columns["Datum"].FillWeight = 13;
             _grid.Columns["Popis"].FillWeight = 42;
-            _grid.CellFormatting += OnCellFormat;
+            _grid.CellFormatting += PriFormatovaniBunky;
             Controls.Add(_grid);
         }
 
-        private void BudujStatus()
+        private void VytvorStatus()
         {
             var pnl = new Panel { Dock = DockStyle.Bottom, Height = 30, BackColor = CPanel };
             _lblPrijmy = new Label { Location = new Point(10, 8), AutoSize = true, ForeColor = CZel, BackColor = Color.Transparent, Font = new Font("Segoe UI", 9f, FontStyle.Bold) };
@@ -169,7 +168,7 @@ namespace RozpocetFinanci
             Controls.Add(pnl);
         }
 
-        private void OnPridat(object sender, EventArgs e)
+        private void PriKliknutiPridat(object sender, EventArgs e)
         {
             if (!decimal.TryParse(_txtCastka.Text.Replace(',', '.'), System.Globalization.NumberStyles.Any,
                 System.Globalization.CultureInfo.InvariantCulture, out decimal castka) || castka <= 0)
@@ -185,12 +184,12 @@ namespace RozpocetFinanci
             _data.Add((_nextId++, castka, _cmbKategorie.Text.Trim(), _dtpDatum.Value.Date, _txtPopis.Text.Trim(), _rbPrijem.Checked));
             _txtCastka.Clear();
             _txtPopis.Clear();
-            AktualizujFilter();
-            ObnovjTabulku(AktualniFilter());
-            ObnovjStatus();
+            AktualizujFiltr();
+            ObnovTabulku(ZiskejAktualniFilter());
+            ObnovStatus();
         }
 
-        private void OnSmazat(object sender, EventArgs e)
+        private void PriKliknutiSmazat(object sender, EventArgs e)
         {
             if (_grid.SelectedRows.Count == 0)
             {
@@ -199,39 +198,39 @@ namespace RozpocetFinanci
             }
             int id = Convert.ToInt32(_grid.SelectedRows[0].Cells["Id"].Value);
             _data.RemoveAll(t => t.id == id);
-            AktualizujFilter();
-            ObnovjTabulku(AktualniFilter());
-            ObnovjStatus();
+            AktualizujFiltr();
+            ObnovTabulku(ZiskejAktualniFilter());
+            ObnovStatus();
         }
 
-        private void OnVymazatVse(object sender, EventArgs e)
+        private void PriKliknutiVymazatVse(object sender, EventArgs e)
         {
             if (_data.Count == 0) return;
             if (MessageBox.Show("Smazat všechny transakce?", "Potvrzení", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             _data.Clear();
             _nextId = 1;
-            AktualizujFilter();
-            ObnovjTabulku(null);
-            ObnovjStatus();
+            AktualizujFiltr();
+            ObnovTabulku(null);
+            ObnovStatus();
         }
 
-        private void OnFilterZmena(object sender, EventArgs e)
+        private void PriZmeneFiltru(object sender, EventArgs e)
         {
-            ObnovjTabulku(AktualniFilter());
+            ObnovTabulku(ZiskejAktualniFilter());
         }
 
-        private void OnCastkaKeyPress(object sender, KeyPressEventArgs e)
+        private void PriStiskuKlavesyCastka(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != '.' && e.KeyChar != '\b')
                 e.Handled = true;
         }
 
-        private void OnPopisKeyDown(object sender, KeyEventArgs e)
+        private void PriStiskuKlavesyPopis(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) { OnPridat(sender, e); e.SuppressKeyPress = true; }
+            if (e.KeyCode == Keys.Enter) { PriKliknutiPridat(sender, e); e.SuppressKeyPress = true; }
         }
 
-        private void OnCellFormat(object sender, DataGridViewCellFormattingEventArgs e)
+        private void PriFormatovaniBunky(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (_grid.Columns[e.ColumnIndex].Name == "Typ" && e.Value != null)
             {
@@ -240,12 +239,12 @@ namespace RozpocetFinanci
             }
         }
 
-        private string AktualniFilter() =>
+        private string ZiskejAktualniFilter() =>
             _cmbFilter.SelectedIndex == 0 ? null : _cmbFilter.SelectedItem?.ToString();
 
-        private void AktualizujFilter()
+        private void AktualizujFiltr()
         {
-            string aktualni = AktualniFilter();
+            string aktualni = ZiskejAktualniFilter();
             _cmbFilter.Items.Clear();
             _cmbFilter.Items.Add("— Vše —");
             foreach (string k in _data.Select(t => t.kategorie).Distinct().OrderBy(x => x))
@@ -254,7 +253,7 @@ namespace RozpocetFinanci
             _cmbFilter.SelectedIndex = idx >= 0 ? idx : 0;
         }
 
-        private void ObnovjTabulku(string filtr)
+        private void ObnovTabulku(string filtr)
         {
             _grid.Rows.Clear();
             var seznam = string.IsNullOrEmpty(filtr)
@@ -266,7 +265,7 @@ namespace RozpocetFinanci
                     t.kategorie, t.datum.ToString("dd.MM.yyyy"), t.popis);
         }
 
-        private void ObnovjStatus()
+        private void ObnovStatus()
         {
             decimal prijmy = _data.Where(t => t.prijem).Sum(t => t.castka);
             decimal vydaje = _data.Where(t => !t.prijem).Sum(t => t.castka);
