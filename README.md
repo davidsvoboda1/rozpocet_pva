@@ -25,11 +25,9 @@ Chcete-li si aplikaci vyzkoušet nebo upravit kód, postupujte podle následují
 4. Najděte rozbalenou složku a otevřete soubor s příponou **`.csproj`** (tím se vám ve Visual Studiu načte celý projekt).
 
 ### 3. Spuštění aplikace
-* Jakmile se projekt načte, stačí v horní liště Visual Studia kliknout na zelené tlačítko **`Spustit`** (nebo stisknout klávesu **F5**).
+* Jakmile se projekt načte, klikněte v boční liště Visual Studia na soubor **Program.cs**, poté v horní liště klikněte na zelené tlačítko **Spustit** (nebo stisknout klávesu F5).
 
----
 
 ## Použité technologie
 * **Jazyk:** C#
 * **Vývojové prostředí:** Visual Studio
-* **Framework:** .NET (Console Application / WPF / WinForms - *doplň podle sebe*)
